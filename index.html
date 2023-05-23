@@ -10,9 +10,7 @@
   </head>
   <body>
     <main>
-      <div id="selection-area">
-        Selection Area
-      </div>
+      <div id="selection-area">HSL: 289, 87.7%, 25.5%</div>
       <div id="current-color">
         <div id="current-color-display"></div>
         <div id="current-color-values">
@@ -28,11 +26,11 @@
           <option value="complimentary">Complimentary</option> 
           <option value="triadic">Triadic</option>
           <option value="tetradic">Tetradic</option> 
-          <option value="analagous">Analagous</option> 
           <option value="hues">Hues</option> 
           <option value="saturation">Saturation</option> 
           <option value="lightness">Lightness</option> 
         </select>
+        <button id="go" onclick="updateRelated()">Go</button>
         <div id="related-color-display">
         </div>
       </div>

@@ -8,6 +8,79 @@ Email: beckhv2@gmail.com
 Github: https://github.com/bexcoding
 */
 
+function updateRelated() {
+    resetDisplay(document.getElementById('related-color-display'));
+    const mainColor = new Hsl(281,.58,.39);
+    const colorType = document.getElementById('related').value;
+    makePalette(colorType, mainColor);
+
+    //reset related color display
+    function resetDisplay(parent) {
+        while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+        };
+    }
+
+
+    //make new color square
+    function makeSquare(hex) {
+        const square = document.createElement('div');
+        square.setAttribute('class', 'color-tile');
+        square.setAttribute('id', `${hex}`);
+        document.getElementById('related-color-display').appendChild(square);
+        const top = document.createElement('div');
+        top.setAttribute('class', 'tile-top');
+        top.style.backgroundColor = hex;
+        const bottom = document.createElement('div');
+        bottom.setAttribute('class', 'tile-bottom');
+        bottom.innerHTML = hex;
+        document.getElementById(`${hex}`).appendChild(top);
+        document.getElementById(`${hex}`).appendChild(bottom);
+    }
+
+
+    //decides how many squares to make
+    function makePalette(relation, mainColor) {
+        const mainHex = rgbToHex(hslToRgb(mainColor));
+        if (relation === 'complimentary') {
+            const complement = new Hsl(((mainColor.hue + 180) % 360), mainColor.saturation, mainColor.lightness);
+            makeSquare(mainHex);
+            makeSquare(rgbToHex(hslToRgb(complement)));
+        } else if (relation === 'triadic') {
+            const second = new Hsl(((mainColor.hue + 120) % 360), mainColor.saturation, mainColor.lightness); 
+            const third = new Hsl(((mainColor.hue + 240) % 360), mainColor.saturation, mainColor.lightness);
+            makeSquare(mainHex);
+            makeSquare(rgbToHex(hslToRgb(second)));
+            makeSquare(rgbToHex(hslToRgb(third)));
+        } else if (relation === 'tetradic') {
+            const tetra2 = new Hsl(((mainColor.hue + 90) % 360), mainColor.saturation, mainColor.lightness);
+            const tetra3 = new Hsl(((mainColor.hue + 180) % 360), mainColor.saturation, mainColor.lightness);
+            const tetra4 = new Hsl(((mainColor.hue + 270) % 360), mainColor.saturation, mainColor.lightness);
+            makeSquare(mainHex);
+            makeSquare(rgbToHex(hslToRgb(tetra2)));
+            makeSquare(rgbToHex(hslToRgb(tetra3)));
+            makeSquare(rgbToHex(hslToRgb(tetra4)));
+        } else if (relation === 'hues') {
+            let currentHue = mainColor.hue;
+            for (let i = 0; i < 8; i++) {
+                makeSquare(rgbToHex(hslToRgb(new Hsl((currentHue % 360), mainColor.saturation, mainColor.lightness))));
+                currentHue = currentHue + 45;
+            };
+        } else if (relation === 'saturation') {
+            let currentSat = 0;
+            for (let i = 0; i < 8; i++) {
+                makeSquare(rgbToHex(hslToRgb(new Hsl(mainColor.hue, currentSat, mainColor.lightness))));
+                currentSat = currentSat + 0.12;
+            };
+        } else {
+            let currentLight = 0;
+            for (let i = 0; i < 8; i++) {
+                makeSquare(rgbToHex(hslToRgb(new Hsl(mainColor.hue, mainColor.saturation, currentLight))));
+                currentLight = currentLight + 0.12;
+            };
+        };
+    }
+}
 
 //creates hsl object
 function Hsl(h, s, l) {
@@ -62,9 +135,9 @@ function hslToRgb(hslValue) {
             r1 = c;
             b1 = x;
         };
-        const red = Math.floor((r1 + m) * 255);
-        const green = Math.floor((g1 + m) * 255);
-        const blue = Math.floor((b1 + m) * 255);
+        const red = Math.round((r1 + m) * 255);
+        const green = Math.round((g1 + m) * 255);
+        const blue = Math.round((b1 + m) * 255);
         return new Rgb(red, green, blue);
     } else {
         console.log("HSL object is invalid");
