@@ -2,7 +2,7 @@
 Title: Color Picker
 Description: Allows a user to pick or enter custom colors and view related 
 colors.
-Last Updated: May 22, 2023
+Last Updated: May 23, 2023
 Developer: Alexander Beck
 Email: beckhv2@gmail.com
 Github: https://github.com/bexcoding
@@ -62,11 +62,51 @@ function hslToRgb(hslValue) {
             r1 = c;
             b1 = x;
         };
-        const red = Math.round((r1 + m) * 255);
-        const green = Math.round((g1 + m) * 255);
-        const blue = Math.round((b1 + m) * 255);
+        const red = Math.floor((r1 + m) * 255);
+        const green = Math.floor((g1 + m) * 255);
+        const blue = Math.floor((b1 + m) * 255);
         return new Rgb(red, green, blue);
     } else {
         console.log("HSL object is invalid");
     };
+}
+
+
+//convert rgb object to hex
+function rgbToHex(rgbObject) {
+    let hexString = "#";
+    hexString += toHexadecimal(rgbObject.red);
+    hexString += toHexadecimal(rgbObject.green);
+    hexString += toHexadecimal(rgbObject.blue);
+    return hexString;
+
+
+    //convert decimal number to hexadecimal number
+    function toHexadecimal(decimal) {
+        let first = Math.floor(decimal / 16);
+        first = numToString(first);
+        let second = decimal % 16;
+        second = numToString(second);
+        return first + second;
+    }
+
+
+    //convert hexadecimal numbers to strings
+    function numToString(num) {
+    if (num < 10) {
+        return num.toString();
+    } else if (num === 10) {
+        return "A";
+    } else if (num === 11) {
+        return "B";
+    } else if (num === 12) {
+        return "C";
+    } else if (num === 13) {
+        return "D";
+    } else if (num === 14) {
+        return "E";
+    } else {
+        return "F";
+    };
+    }
 }
