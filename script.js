@@ -8,6 +8,9 @@ Email: beckhv2@gmail.com
 Github: https://github.com/bexcoding
 */
 
+window.addEventListener('load', updateRelated);
+document.getElementById('related').addEventListener('change', updateRelated);
+
 function updateRelated() {
     resetDisplay(document.getElementById('related-color-display'));
     const mainColor = new Hsl(281,.58,.39);
