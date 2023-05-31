@@ -8,8 +8,8 @@ main {
     display: grid;
     height: 1200px;
     width: 100%;
-    grid-template-columns: repeat(1fr, 6);
-    grid-template-rows: repeat(1fr, 8);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
 }
 
 .bold {
@@ -23,24 +23,36 @@ main {
 #selection-area {
     background-color: #ffffff;
     grid-area: 1 / 1 / span 2 / span 2;
+    display: flex;
+    flex-direction: column;
+}
+
+#explanation {
+    width: 90%;
+    padding: 0 20px 0 20px;
+}
+
+#color-picker-area {
+    padding: 20px 20px 0 20px;
+    align-self: center;
 }
 
 #current-color {
     background-color: #eeeeee;
-    grid-area: 3 / 1 / span 1 / span 2;
+    grid-area: 3 / 1 / span 2 / span 2;
     display: flex;
     flex-direction: column;
 }
 
 #current-color-display {
     background-color: #66087a;
-    height: 40%;
+    height: 60%;
     width: 100%;
 }
 
 #current-color-values {
     background-color: #ffeeff;
-    height: 60%;
+    height: 40%;
     width: 100%;
     padding: 10px 0 0 20px;
     font-size: 16px;
@@ -48,7 +60,7 @@ main {
 
 #related-colors {
     background-color: #dddddd;
-    grid-area: 1 / 3 / span 3 / span 4;
+    grid-area: 1 / 3 / span 4 / span 4;
     padding: 20px
 }
 
@@ -86,7 +98,7 @@ main {
 
 #saved-colors {
     background-color: #cccccc;
-    grid-area: 4 / 1 / span 4 / span 6;
+    grid-area: 5 / 1 / span 3 / span 6;
     padding: 20px;
     min-width: 0;
     min-height: 0;

@@ -10,6 +10,13 @@
   <body>
     <main>
       <div id="selection-area">
+        <div id="explanation">
+          <h1>Color Picker</h1>
+          <p>Choose a color below with the color selection tool. You can see the corresponding color values in HSL, RGB, and HEX below. To the right, you can choose which kind of related colors to display.</p>
+        </div>
+        <div id="color-picker-area">
+          <input type="color" id="color-picker" value="#66087A">
+        </div>
       </div>
       <div id="current-color">
         <div id="current-color-display"></div>
@@ -21,7 +28,7 @@
         </div>
       </div>
       <div id="related-colors">
-        <label for="related">Choose a related color type: </label>
+        <label for="related" class="bold">Choose a related color type: </label>
         <select name="related" id="related">
           <option value="complimentary">Complimentary</option> 
           <option value="triadic">Triadic</option>
