@@ -9,13 +9,17 @@ Github: https://github.com/bexcoding
 */
 
 
-window.addEventListener('load', updateRelated);
+window.addEventListener('load', updateRelated('#66087A'));
 document.getElementById('related').addEventListener('change', updateRelated);
-
+document.getElementById('color-picker').addEventListener('change', () => {
+    updateRelated();
+    document.getElementById('current-color-display').style.backgroundColor = document.getElementById('color-picker').value;
+    });
 
 function updateRelated() {
+    const color = document.getElementById('color-picker').value;
     resetDisplay(document.getElementById('related-color-display'));
-    const mainColor = new Hsl(281,.58,.39);
+    const mainColor = rgbToHsl(hexToRgb(color));
     const colorType = document.getElementById('related').value;
     makePalette(colorType, mainColor);
 
