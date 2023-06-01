@@ -2,14 +2,16 @@
 Title: Color Picker
 Description: Allows a user to pick or enter custom colors and view related 
 colors.
-Last Updated: May 30, 2023
+Last Updated: May 31, 2023
 Developer: Alexander Beck
 Email: beckhv2@gmail.com
 Github: https://github.com/bexcoding
 */
 
+
 window.addEventListener('load', updateRelated);
 document.getElementById('related').addEventListener('change', updateRelated);
+
 
 function updateRelated() {
     resetDisplay(document.getElementById('related-color-display'));
@@ -169,20 +171,87 @@ function rgbToHex(rgbObject) {
 
     //convert hexadecimal numbers to strings
     function numToString(num) {
-    if (num < 10) {
-        return num.toString();
-    } else if (num === 10) {
-        return "A";
-    } else if (num === 11) {
-        return "B";
-    } else if (num === 12) {
-        return "C";
-    } else if (num === 13) {
-        return "D";
-    } else if (num === 14) {
-        return "E";
-    } else {
-        return "F";
-    };
+        if (num < 10) {
+            return num.toString();
+        } else if (num === 10) {
+            return "A";
+        } else if (num === 11) {
+            return "B";
+        } else if (num === 12) {
+            return "C";
+        } else if (num === 13) {
+            return "D";
+        } else if (num === 14) {
+            return "E";
+        } else {
+            return "F";
+        };
     }
+}
+
+
+//convert hex to rgb object
+function hexToRgb(hexValue) {
+    let rgbValue = hexValue.slice(1);
+    const red = toDecimal(rgbValue.slice(0,2));
+    const green = toDecimal(rgbValue.slice(2,4));
+    const blue = toDecimal(rgbValue.slice(4));
+    return new Rgb(red, green, blue);
+
+
+    //convert hexadecimal number to decimal number
+    function toDecimal(hexadecimal) {
+        let first = stringToNum(hexadecimal[0]) * 16;
+        let second = stringToNum(hexadecimal[1]);
+        return first + second;
+    }
+
+
+    //convert hexadecimal strings to decimal numbers
+    function stringToNum(string) {
+        string = string.toUpperCase();
+        if (string === "A") {
+            return 10;
+        } else if (string === "B") {
+            return 11;
+        } else if (string === "C") {
+            return 12;
+        } else if (string === "D") {
+            return 13;
+        } else if (string === "E") {
+            return 14;
+        } else if (string === "F") {
+            return 15;
+        } else {
+            return Number(string);
+        }
+    }
+}
+
+
+//convert rgb object to hsl object
+function rgbToHsl(rgbValue) {
+    const r1 = rgbValue.red / 255;
+    const g1 = rgbValue.green / 255;
+    const b1 = rgbValue.blue / 255;
+    const cMax = Math.max(r1, g1, b1);
+    const cMin = Math.min(r1, g1, b1);
+    const cDelta = cMax - cMin;
+    let hue = 0;
+    let saturation = 0;
+    let lightness = (cMax + cMin) / 2;
+    lightness = Math.round(lightness * 10) / 10;
+    if (cDelta != 0) {
+        saturation = cDelta / (1 - Math.abs((2 * lightness) - 1));
+        if (cMax === r1) {
+            hue = 60 * (((g1 - b1) / cDelta) % 6);
+        } else if (cMax === g1) {
+            hue = 60 * (((b1 - r1) / cDelta) + 2);
+        } else if (cMax === b1) {
+            hue = 60 * (((r1 - g1) / cDelta) + 4);
+        };
+        saturation = Math.round(saturation * 10) / 10; 
+        hue = Math.round(hue); 
+    };
+    return new Hsl(hue, saturation, lightness);
 }
