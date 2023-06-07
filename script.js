@@ -2,18 +2,24 @@
 Title: Color Picker
 Description: Allows a user to pick or enter custom colors and view related 
 colors.
-Last Updated: May 31, 2023
+Last Updated: June 6, 2023
 Developer: Alexander Beck
 Email: beckhv2@gmail.com
 Github: https://github.com/bexcoding
 */
 
 
-window.addEventListener('load', updateRelated('#66087A'));
+window.addEventListener('load', () => {
+    updateBackground('#66087A');
+    updateRelated();
+    });
 document.getElementById('related').addEventListener('change', updateRelated);
 document.getElementById('color-picker').addEventListener('change', () => {
+    const currentColor = document.getElementById('color-picker').value;
+    console.log(`The selected color is ${currentColor}.`);
+    updateBackground(currentColor);
     updateRelated();
-    document.getElementById('current-color-display').style.backgroundColor = document.getElementById('color-picker').value;
+    document.getElementById('current-color-display').style.backgroundColor = currentColor;
     });
 
 function updateRelated() {
@@ -90,6 +96,21 @@ function updateRelated() {
         };
     }
 }
+
+
+//update page colors
+function updateBackground(color) {
+    const converted = rgbToHsl(hexToRgb(color));
+    const hue = converted.hue;
+    const sat = converted.saturation;
+    const light = converted.lightness;
+    document.getElementById('selection-area').style.backgroundColor = `hsl(${hue}, ${sat * 100}%, 90%)`;
+    document.getElementById('related-colors').style.borderLeftColor = `hsl(${(hue + 90) % 360}, ${sat * 100}%, ${light * 100}%)`;
+    document.getElementById('saved-colors').style.borderTopColor = `hsl(${(hue + 90) % 360}, ${sat * 100}%, ${light * 100}%)`;
+    document.getElementById('saved-colors').style.backgroundColor = `hsl(${(hue + 90) % 360}, ${sat * 100}%, 90%)`;
+    document.getElementById('current-color-values').style.backgroundColor = `hsl(${hue}, ${sat * 100}%, 90%)`;
+}
+
 
 //creates hsl object
 function Hsl(h, s, l) {
