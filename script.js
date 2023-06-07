@@ -11,6 +11,7 @@ Github: https://github.com/bexcoding
 
 window.addEventListener('load', () => {
     updateBackground('#66087A');
+    updateColorValues('#66087A');
     updateRelated();
     });
 document.getElementById('related').addEventListener('change', updateRelated);
@@ -18,11 +19,13 @@ document.getElementById('color-picker').addEventListener('change', () => {
     const currentColor = document.getElementById('color-picker').value;
     console.log(`The selected color is ${currentColor}.`);
     updateBackground(currentColor);
+    updateColorValues(currentColor);
     updateRelated();
     document.getElementById('current-color-display').style.backgroundColor = currentColor;
     });
 
 function updateRelated() {
+    console.log('Related colors updated.');
     const color = document.getElementById('color-picker').value;
     resetDisplay(document.getElementById('related-color-display'));
     const mainColor = rgbToHsl(hexToRgb(color));
@@ -56,6 +59,7 @@ function updateRelated() {
 
     //decides how many squares to make
     function makePalette(relation, mainColor) {
+        console.log('New palette created.');
         const mainHex = rgbToHex(hslToRgb(mainColor));
         if (relation === 'complimentary') {
             const complement = new Hsl(((mainColor.hue + 180) % 360), mainColor.saturation, mainColor.lightness);
@@ -100,6 +104,7 @@ function updateRelated() {
 
 //update page colors
 function updateBackground(color) {
+    console.log('Background colors updated.');
     const converted = rgbToHsl(hexToRgb(color));
     const hue = converted.hue;
     const sat = converted.saturation;
@@ -109,6 +114,23 @@ function updateBackground(color) {
     document.getElementById('saved-colors').style.borderTopColor = `hsl(${(hue + 90) % 360}, ${sat * 100}%, ${light * 100}%)`;
     document.getElementById('saved-colors').style.backgroundColor = `hsl(${(hue + 90) % 360}, ${sat * 100}%, 90%)`;
     document.getElementById('current-color-values').style.backgroundColor = `hsl(${hue}, ${sat * 100}%, 90%)`;
+}
+
+
+//updates current color values
+function updateColorValues(color) {
+    console.log('Color values updated.');
+    const rgb = hexToRgb(color);
+    const red = rgb.red;
+    const green = rgb.green;
+    const blue = rgb.blue;
+    const hsl = rgbToHsl(rgb);
+    const hue = hsl.hue;
+    const sat = hsl.saturation;
+    const light = hsl.lightness;
+    document.getElementById('hsl-color-val').innerHTML = `HSL: ${hue}, ${sat * 100}%, ${light * 100}%`;
+    document.getElementById('rgb-color-val').innerHTML = `RGB: ${red}, ${green}, ${blue}`;
+    document.getElementById('hex-color-val').innerHTML = `HEX: ${color.toUpperCase()}`;
 }
 
 
