@@ -53,7 +53,7 @@ main {
 #current-color-display:hover{
     transform: translatex(5px) translatey(-5px);
     transition: 200ms;
-    box-shadow: -5px 5px 5px 2px black;
+    box-shadow: -5px 5px 5px 2px #2F4D65;
 }
 
 #current-color-values {
@@ -66,9 +66,7 @@ main {
 
 #related-colors {
     background-color: white;
-    border-left-style: solid;
-    border-left-width: 3px;
-    border-left-color: white;
+    border-left: solid 3px black;
     grid-area: 1 / 3 / span 4 / span 4;
     padding: 20px
 }
@@ -95,7 +93,7 @@ main {
 .color-tile:hover{
     transform: translatex(5px) translatey(-5px);
     transition: 200ms;
-    box-shadow: -5px 5px 5px 2px black;
+    box-shadow: -5px 5px 5px 2px #2F4D65;
 }
 
 .tile-top {
@@ -113,13 +111,43 @@ main {
 
 #saved-colors {
     background-color: #ffffff;
-    border-top-width: 3px;
-    border-top-style: solid;
-    border-top-color: white;
+    display: flex;
+    flex-direction: column;
+    border-top: solid 3px black;
     grid-area: 5 / 1 / span 3 / span 6;
     padding: 20px;
     min-width: 0;
     min-height: 0;
+    height: 1000px;
+    text-align: center;
+}
+
+.saved-color {
+    margin-top: 10px;
+    border: 3px solid black;
+    background-color: red;
+    color: red;
+    width: 80%;
+    height: 50px;
+    align-self: center;
+}
+
+.saved-color:hover {
+    transform: translatex(20px);
+    transition: 200ms;
+}
+
+.saved-text {
+    padding-top: 10px;
+    height: 100%;
+    width: 100%;
+    text-align: left;
+}
+
+.saved-text:hover {
+    color: black;
+    transform: translatex(-100px);
+    transition: 200ms;
 }
 
 footer {

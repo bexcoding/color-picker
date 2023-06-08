@@ -2,18 +2,19 @@
 Title: Color Picker
 Description: Allows a user to pick or enter custom colors and view related 
 colors.
-Last Updated: June 7, 2023
+Last Updated: June 8, 2023
 Developer: Alexander Beck
 Email: beckhv2@gmail.com
 Github: https://github.com/bexcoding
 */
 
 
+let savedColorCounter = 0;
 window.addEventListener('load', () => {
     updateBackground('#66087A');
     updateColorValues('#66087A');
     updateRelated();
-    });
+});
 document.getElementById('related').addEventListener('change', updateRelated);
 document.getElementById('color-picker').addEventListener('change', () => {
     const currentColor = document.getElementById('color-picker').value;
@@ -21,7 +22,29 @@ document.getElementById('color-picker').addEventListener('change', () => {
     updateColorValues(currentColor);
     updateRelated();
     document.getElementById('current-color-display').style.backgroundColor = currentColor;
-    });
+});
+document.getElementById('current-color-display').addEventListener('click', () => {
+    const current = document.getElementById('color-picker').value;
+    saveColor(current.toUpperCase());
+});
+
+
+//make new saved color
+function saveColor(hex) {
+    savedColorCounter += 1;
+    const savedColor = document.createElement('div');
+    savedColor.setAttribute('class', 'saved-color');
+    savedColor.setAttribute('id', `saved-color-${savedColorCounter}`);
+    savedColor.style.backgroundColor = hex;
+    savedColor.style.color = hex;       
+    document.getElementById('saved-colors').appendChild(savedColor);
+
+    const savedColorText = document.createElement('div');
+    savedColorText.setAttribute('class', 'saved-text');
+    savedColorText.innerHTML = hex;
+    document.getElementById(`saved-color-${savedColorCounter}`).appendChild(savedColorText);
+}
+
 
 function updateRelated() {
     const color = document.getElementById('color-picker').value;
@@ -43,14 +66,17 @@ function updateRelated() {
         const square = document.createElement('div');
         square.setAttribute('class', 'color-tile');
         square.setAttribute('id', `${hex}`);
+        square.setAttribute('onclick', `saveColor("${hex.toUpperCase()}")`);
         document.getElementById('related-color-display').appendChild(square);
+
         const top = document.createElement('div');
         top.setAttribute('class', 'tile-top');
         top.style.backgroundColor = hex;
+        document.getElementById(`${hex}`).appendChild(top);
+
         const bottom = document.createElement('div');
         bottom.setAttribute('class', 'tile-bottom');
         bottom.innerHTML = hex;
-        document.getElementById(`${hex}`).appendChild(top);
         document.getElementById(`${hex}`).appendChild(bottom);
     }
 
@@ -104,11 +130,8 @@ function updateBackground(color) {
     const converted = rgbToHsl(hexToRgb(color));
     const hue = converted.hue;
     const sat = converted.saturation;
-    const light = converted.lightness;
     document.getElementById('selection-area').style.backgroundColor = `hsl(${hue}, ${sat * 100}%, 90%)`;
-    document.getElementById('related-colors').style.borderLeftColor = `hsl(${(hue + 90) % 360}, ${sat * 100}%, ${light * 100}%)`;
-    document.getElementById('saved-colors').style.borderTopColor = `hsl(${(hue + 90) % 360}, ${sat * 100}%, ${light * 100}%)`;
-    document.getElementById('saved-colors').style.backgroundColor = `hsl(${(hue + 90) % 360}, ${sat * 100}%, 90%)`;
+    document.getElementById('saved-colors').style.backgroundColor = `hsl(${hue}, ${sat * 100}%, 90%)`;
     document.getElementById('current-color-values').style.backgroundColor = `hsl(${hue}, ${sat * 100}%, 90%)`;
 }
 
