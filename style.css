@@ -50,6 +50,12 @@ main {
     width: 100%;
 }
 
+#current-color-display:hover{
+    transform: translatex(5px) translatey(-5px);
+    transition: 200ms;
+    box-shadow: -5px 5px 5px 2px black;
+}
+
 #current-color-values {
     background-color: white;
     height: 40%;
@@ -84,6 +90,12 @@ main {
     height: 40%;
     width: 20%;
     border: solid 1px gray;
+}
+
+.color-tile:hover{
+    transform: translatex(5px) translatey(-5px);
+    transition: 200ms;
+    box-shadow: -5px 5px 5px 2px black;
 }
 
 .tile-top {
