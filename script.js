@@ -2,7 +2,7 @@
 Title: Color Picker
 Description: Allows a user to pick or enter custom colors and view related 
 colors.
-Last Updated: June 6, 2023
+Last Updated: June 7, 2023
 Developer: Alexander Beck
 Email: beckhv2@gmail.com
 Github: https://github.com/bexcoding
@@ -17,7 +17,6 @@ window.addEventListener('load', () => {
 document.getElementById('related').addEventListener('change', updateRelated);
 document.getElementById('color-picker').addEventListener('change', () => {
     const currentColor = document.getElementById('color-picker').value;
-    console.log(`The selected color is ${currentColor}.`);
     updateBackground(currentColor);
     updateColorValues(currentColor);
     updateRelated();
@@ -25,7 +24,6 @@ document.getElementById('color-picker').addEventListener('change', () => {
     });
 
 function updateRelated() {
-    console.log('Related colors updated.');
     const color = document.getElementById('color-picker').value;
     resetDisplay(document.getElementById('related-color-display'));
     const mainColor = rgbToHsl(hexToRgb(color));
@@ -59,7 +57,6 @@ function updateRelated() {
 
     //decides how many squares to make
     function makePalette(relation, mainColor) {
-        console.log('New palette created.');
         const mainHex = rgbToHex(hslToRgb(mainColor));
         if (relation === 'complimentary') {
             const complement = new Hsl(((mainColor.hue + 180) % 360), mainColor.saturation, mainColor.lightness);
@@ -104,7 +101,6 @@ function updateRelated() {
 
 //update page colors
 function updateBackground(color) {
-    console.log('Background colors updated.');
     const converted = rgbToHsl(hexToRgb(color));
     const hue = converted.hue;
     const sat = converted.saturation;
@@ -119,7 +115,6 @@ function updateBackground(color) {
 
 //updates current color values
 function updateColorValues(color) {
-    console.log('Color values updated.');
     const rgb = hexToRgb(color);
     const red = rgb.red;
     const green = rgb.green;
@@ -128,7 +123,7 @@ function updateColorValues(color) {
     const hue = hsl.hue;
     const sat = hsl.saturation;
     const light = hsl.lightness;
-    document.getElementById('hsl-color-val').innerHTML = `HSL: ${hue}, ${sat * 100}%, ${light * 100}%`;
+    document.getElementById('hsl-color-val').innerHTML = `HSL: ${hue}, ${Math.round(sat * 100)}%, ${Math.round(light * 100)}%`;
     document.getElementById('rgb-color-val').innerHTML = `RGB: ${red}, ${green}, ${blue}`;
     document.getElementById('hex-color-val').innerHTML = `HEX: ${color.toUpperCase()}`;
 }
@@ -287,17 +282,21 @@ function rgbToHsl(rgbValue) {
     let hue = 0;
     let saturation = 0;
     let lightness = (cMax + cMin) / 2;
-    lightness = Math.round(lightness * 10) / 10;
+    lightness = Math.round(lightness * 100) / 100;
     if (cDelta != 0) {
         saturation = cDelta / (1 - Math.abs((2 * lightness) - 1));
         if (cMax === r1) {
-            hue = 60 * (((g1 - b1) / cDelta) % 6);
+            hue = ((g1 - b1) / cDelta) % 6;
         } else if (cMax === g1) {
-            hue = 60 * (((b1 - r1) / cDelta) + 2);
+            hue = ((b1 - r1) / cDelta) + 2;
         } else if (cMax === b1) {
-            hue = 60 * (((r1 - g1) / cDelta) + 4);
+            hue = ((r1 - g1) / cDelta) + 4;
         };
-        saturation = Math.round(saturation * 10) / 10; 
+        hue *= 60;
+        if (hue < 0) {
+            hue += 360;
+        };
+        saturation = Math.round(saturation * 100) / 100; 
         hue = Math.round(hue); 
     };
     return new Hsl(hue, saturation, lightness);
