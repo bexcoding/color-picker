@@ -12,6 +12,7 @@ main {
     grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+/* bold highlight for headings */
 .bold {
     font-weight: bold;
 }
@@ -20,6 +21,7 @@ main {
     padding-left: 20px;
 }
 
+/* area for selecting a color to work with */
 #selection-area {
     background-color: #ffffff;
     grid-area: 1 / 1 / span 2 / span 2;
@@ -37,6 +39,7 @@ main {
     align-self: center;
 }
 
+/* area for displaying the current color and its rgb, hsl, hex values */
 #current-color {
     background-color: #eeeeee;
     grid-area: 3 / 1 / span 2 / span 2;
@@ -64,6 +67,7 @@ main {
     font-size: 16px;
 }
 
+/* area for displaying related colors (complementary, triadic, etc) */
 #related-colors {
     background-color: white;
     border-left: solid 3px black;
@@ -84,6 +88,7 @@ main {
     background-color: white;
 }
 
+/* settings for when new color tiles are created */
 .color-tile {
     height: 40%;
     width: 20%;
@@ -109,6 +114,7 @@ main {
     padding-top: 19px;
 }
 
+/* area for keeping saved colors */
 #saved-colors {
     background-color: #ffffff;
     display: flex;
@@ -122,6 +128,7 @@ main {
     text-align: center;
 }
 
+/* settings for when new colors are saved */
 .saved-color {
     margin-top: 10px;
     border: 3px solid black;

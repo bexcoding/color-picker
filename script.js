@@ -9,36 +9,51 @@ Github: https://github.com/bexcoding
 */
 
 
+// counter for naming id of saved colors
 let savedColorCounter = 0;
+
+// updates page on loading to create base appearance 
 window.addEventListener('load', () => {
     updateBackground('#66087A');
     updateColorValues('#66087A');
     updateRelated();
 });
+
+// monitors dropdown menu for changes
 document.getElementById('related').addEventListener('change', updateRelated);
+
+// updates page based on selected color from expanding color picker
 document.getElementById('color-picker').addEventListener('change', () => {
     const currentColor = document.getElementById('color-picker').value;
     updateBackground(currentColor);
     updateColorValues(currentColor);
     updateRelated();
-    document.getElementById('current-color-display').style.backgroundColor = currentColor;
+    document.getElementById('current-color-display').style.backgroundColor = 
+        currentColor;
 });
+
+// allows current main displayed color to be saved by clicking on it
 document.getElementById('current-color-display').addEventListener('click', () => {
     const current = document.getElementById('color-picker').value;
     saveColor(current.toUpperCase());
 });
 
 
-//make new saved color
+/**
+ * saves a given color at the bottom of the page
+ * @param {string} hex - string of hex color (example: '#F33D70')
+ */
 function saveColor(hex) {
+    // counter tracks number of saved colors for unique id naming
     savedColorCounter += 1;
+    // creates a rectangle in the save area with the given hex color
     const savedColor = document.createElement('div');
     savedColor.setAttribute('class', 'saved-color');
     savedColor.setAttribute('id', `saved-color-${savedColorCounter}`);
     savedColor.style.backgroundColor = hex;
     savedColor.style.color = hex;       
     document.getElementById('saved-colors').appendChild(savedColor);
-
+    // creates the text/name of the saved color
     const savedColorText = document.createElement('div');
     savedColorText.setAttribute('class', 'saved-text');
     savedColorText.innerHTML = hex;
@@ -46,34 +61,46 @@ function saveColor(hex) {
 }
 
 
+/**
+ * updates the related colors section based on the dropdown menu choice
+ */
 function updateRelated() {
+    // resets the display area before making a new palette
     const color = document.getElementById('color-picker').value;
     resetDisplay(document.getElementById('related-color-display'));
     const mainColor = rgbToHsl(hexToRgb(color));
     const colorType = document.getElementById('related').value;
     makePalette(colorType, mainColor);
 
-    //reset related color display
+
+    /**
+     * resets the display area for the related colors section
+     * @param parent - the selector of the area that needs to be cleared
+     */
     function resetDisplay(parent) {
         while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
+            parent.removeChild(parent.firstChild);
         };
     }
 
 
-    //make new color square
+    /**
+     * makes a new color square in the related color area
+     * @param {string} hex - string of hex color (example: '#F33D70')
+     */
     function makeSquare(hex) {
+        // creates a color square
         const square = document.createElement('div');
         square.setAttribute('class', 'color-tile');
         square.setAttribute('id', `${hex}`);
         square.setAttribute('onclick', `saveColor("${hex.toUpperCase()}")`);
         document.getElementById('related-color-display').appendChild(square);
-
+        // creates the top of the square which shows the color
         const top = document.createElement('div');
         top.setAttribute('class', 'tile-top');
         top.style.backgroundColor = hex;
         document.getElementById(`${hex}`).appendChild(top);
-
+        // creates the bottom the square which displays the name of the color
         const bottom = document.createElement('div');
         bottom.setAttribute('class', 'tile-bottom');
         bottom.innerHTML = hex;
@@ -81,9 +108,14 @@ function updateRelated() {
     }
 
 
-    //decides how many squares to make
+    /**
+     * creates the number and color of squares based on the dropdown menu
+     * @param {string} relation - any of the dropdown menu choices
+     * @param {HSL object} mainColor - the main color as an hsl object
+     */
     function makePalette(relation, mainColor) {
         const mainHex = rgbToHex(hslToRgb(mainColor));
+        // each if/else creates the number of squares needed for the option
         if (relation === 'complimentary') {
             const complement = new Hsl(((mainColor.hue + 180) % 360), mainColor.saturation, mainColor.lightness);
             makeSquare(mainHex);
@@ -125,18 +157,26 @@ function updateRelated() {
 }
 
 
-//update page colors
+/**
+ * updates the background of the page with a color similar to the main color 
+ * @param {string} color - string of hex color (example: '#F33D70')
+ */
 function updateBackground(color) {
+    // converts hex to hsl
     const converted = rgbToHsl(hexToRgb(color));
     const hue = converted.hue;
     const sat = converted.saturation;
+    // updates background colors with same hue and sat but with 90% lightness
     document.getElementById('selection-area').style.backgroundColor = `hsl(${hue}, ${sat * 100}%, 90%)`;
     document.getElementById('saved-colors').style.backgroundColor = `hsl(${hue}, ${sat * 100}%, 90%)`;
     document.getElementById('current-color-values').style.backgroundColor = `hsl(${hue}, ${sat * 100}%, 90%)`;
 }
 
 
-//updates current color values
+/**
+ * changes the displayed rgb, hex, and hsl values for the selected color
+ * @param {string} color - string of hex color (example: '#F33D70')
+ */
 function updateColorValues(color) {
     const rgb = hexToRgb(color);
     const red = rgb.red;
@@ -152,7 +192,12 @@ function updateColorValues(color) {
 }
 
 
-//creates hsl object
+/**
+ * template for creating an hsl object
+ * @param {number} h - value for hue
+ * @param {number} s - value for saturation
+ * @param {number} l - value for lightness
+ */
 function Hsl(h, s, l) {
     this.hue = h;
     this.saturation = s;
@@ -160,7 +205,12 @@ function Hsl(h, s, l) {
 }
 
 
-//creates rgb object
+/**
+ * template for creating an rgb object
+ * @param {number} r - value for red
+ * @param {number} g - value for green
+ * @param {number} b - value for blue
+ */
 function Rgb(r, g, b) {
     this.red = r;
     this.green = g;
@@ -168,7 +218,11 @@ function Rgb(r, g, b) {
 }
 
 
-//check for valid hsl object
+/**
+ * checks if the given hsl object has valid values
+ * @param {HSL object} hslObject - the main color as an hsl object
+ * @returns {boolean} - returns true if each value is in the correct range
+ */
 function checkHsl(hslObject) {
     return ((hslObject.hue >= 0 && hslObject.hue <= 360) &&
             (hslObject.saturation >= 0 && hslObject.saturation <= 1) &&
@@ -176,8 +230,13 @@ function checkHsl(hslObject) {
 }
 
 
-//converts hsl object to rgb object
+/**
+ * converts an hsl object to an rgb object
+ * @param {HSL object} hslValue the main color as an hsl object
+ * @returns {RGB object} the converted color in rgb
+ */
 function hslToRgb(hslValue) {
+    // if the given value is a valid hsl object, does the math to convert it
     if (checkHsl(hslValue)) {
         const c = (1 - Math.abs((2 * hslValue.lightness) - 1)) * hslValue.saturation;
         const hPrime = hslValue.hue / 60;
@@ -215,7 +274,10 @@ function hslToRgb(hslValue) {
 }
 
 
-//convert rgb object to hex
+/**
+ * converts an rgb object to a hex color string
+ * @param {RGB object} rgbObject a color represented as an rgb object
+ */
 function rgbToHex(rgbObject) {
     let hexString = "#";
     hexString += toHexadecimal(rgbObject.red);
@@ -224,17 +286,27 @@ function rgbToHex(rgbObject) {
     return hexString;
 
 
-    //convert decimal number to hexadecimal number
+    /**
+     * converts a decimal number to hexadecimal
+     * @param {number} decimal decimal number (example: 10)
+     * @returns {string} two hex characters (example: 'FF')
+     */
     function toHexadecimal(decimal) {
+        // create first hex string
         let first = Math.floor(decimal / 16);
         first = numToString(first);
+        // create second hex string
         let second = decimal % 16;
         second = numToString(second);
         return first + second;
     }
 
 
-    //convert hexadecimal numbers to strings
+    /**
+     * converts hexadecimal numbers to strings
+     * @param {number} num the number from the converted rgb value
+     * @returns {string} a number as a string or a number 10-15 as a letter
+     */
     function numToString(num) {
         if (num < 10) {
             return num.toString();
@@ -255,7 +327,11 @@ function rgbToHex(rgbObject) {
 }
 
 
-//convert hex to rgb object
+/**
+ * converts a hex color string to an rgb object
+ * @param {string} hexValue a hex string of a color (example: '#A8D900')
+ * @returns {RGB object} a converted color as an rgb object
+ */
 function hexToRgb(hexValue) {
     let rgbValue = hexValue.slice(1);
     const red = toDecimal(rgbValue.slice(0,2));
@@ -264,7 +340,11 @@ function hexToRgb(hexValue) {
     return new Rgb(red, green, blue);
 
 
-    //convert hexadecimal number to decimal number
+    /**
+     * converts a pair of hexadecimal string characters to a decimal number
+     * @param {string} hexadecimal two hex characters (example: 'FF')
+     * @returns {number} a decimal number (example: 0 - 255)
+     */
     function toDecimal(hexadecimal) {
         let first = stringToNum(hexadecimal[0]) * 16;
         let second = stringToNum(hexadecimal[1]);
@@ -272,7 +352,11 @@ function hexToRgb(hexValue) {
     }
 
 
-    //convert hexadecimal strings to decimal numbers
+    /**
+     * converts a hexadecimal string to a decimal number
+     * @param {string} string (example: 'F' or '13')
+     * @returns {number} converted number (example: number 0 - 15)
+     */
     function stringToNum(string) {
         string = string.toUpperCase();
         if (string === "A") {
@@ -289,12 +373,16 @@ function hexToRgb(hexValue) {
             return 15;
         } else {
             return Number(string);
-        }
+        };
     }
 }
 
 
-//convert rgb object to hsl object
+/**
+ * converts an rgb object to an hsl object
+ * @param {RGB object} rgbValue a color represented with an rgb object
+ * @returns {HSL object} a color represented with an hsl object
+ */
 function rgbToHsl(rgbValue) {
     const r1 = rgbValue.red / 255;
     const g1 = rgbValue.green / 255;
