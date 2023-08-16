@@ -11,15 +11,19 @@
     <main>
       <div id="selection-area">
         <div id="explanation">
+          <!-- introduces color picker and describes how to use it -->
           <h1>Color Picker</h1>
           <p>Choose a color below with the color selection tool. You can see the corresponding color values in HSL, RGB, and HEX below. To the right, you can choose which kind of related colors to display. Click on a color to add it to your saved colors at the bottom of the page.</p>
         </div>
         <div id="color-picker-area">
+          <!-- built in color picker set with a default purple color --> 
           <input type="color" id="color-picker" value="#66087A">
         </div>
       </div>
       <div id="current-color">
+        <!-- shows large square of current selected color -->
         <div id="current-color-display"></div>
+        <!-- displays hsl, rgb, and hex values for selected color -->
         <div id="current-color-values">
           <p class="bold">Current Color:</p>
           <p class="color-val" id="hsl-color-val"></p>
@@ -28,6 +32,7 @@
         </div>
       </div>
       <div id="related-colors">
+        <!-- dropdown menu for choosing related color types -->
         <label for="related" class="bold">Choose a related color type: </label>
         <select name="related" id="related">
           <option value="complimentary">Complimentary</option> 
@@ -37,10 +42,11 @@
           <option value="saturation">Saturation</option> 
           <option value="lightness">Lightness</option> 
         </select>
-        <div id="related-color-display">
-        </div>
+        <!-- shows related color squares depending on dropdown and color -->
+        <div id="related-color-display"></div>
       </div>
       <div id="saved-colors">
+        <!-- area for any saved colors from above. displays hex on hover -->
         <p class="bold">Saved Colors</p>
       </div>
     </main>
